@@ -6,8 +6,13 @@ const create = async ({ displayName, email, password, image }) => {
 
     return created;
   } catch (error) {
-    console.log(error);
-    return { error: 500, message: 'Erro no Servidor' };
+    console.error(error);
+
+    if (error.errors[0].message === 'Users.email must be unique') {
+      return { error: 409, message: 'User already registered' };
+    }
+
+    return error;
   }
 };
 
