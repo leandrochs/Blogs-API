@@ -3,7 +3,6 @@ const { User } = require('../models');
 const create = async ({ displayName, email, password, image }) => {
   try {
     const created = await User.create({ displayName, email, password, image });
-
     return created;
   } catch (error) {
     console.error(error);
@@ -16,6 +15,17 @@ const create = async ({ displayName, email, password, image }) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const user = await User.findAll();
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+};
+
 module.exports = {
   create,
+  getAll,
 };
