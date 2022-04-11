@@ -1,5 +1,16 @@
 const { User } = require('../models');
 
+const getByEmail = async (email) => {
+  try {
+    const user = await User.findOne({ where: { email } });
+
+    return user;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+};
+
 const create = async ({ displayName, email, password, image }) => {
   try {
     const created = await User.create({ displayName, email, password, image });
@@ -17,5 +28,6 @@ const create = async ({ displayName, email, password, image }) => {
 };
 
 module.exports = {
+  getByEmail,
   create,
 };
