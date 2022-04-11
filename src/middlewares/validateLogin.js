@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const { getByEmail } = require('../service/userService');
 
 const createUserSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -19,10 +18,6 @@ const validateLogin = async (req, res, next) => {
     return res.status(400).json({ message: error.details[0].message });
   }
 
-  const emailExist = await getByEmail(req.body.email);
-  if (!emailExist) return res.status(400).json({ message: 'Invalid fields' });
-
-  console.log('emailExist:', emailExist);
   next();
 };
 
