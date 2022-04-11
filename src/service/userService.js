@@ -25,7 +25,21 @@ const getAll = async () => {
   }
 };
 
+const getById = async (id) => {
+  try {
+    const user = await User.findOne({
+      attributes: ['id', 'displayName', 'email', 'image'],
+      where: { id },
+    });
+    return user;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

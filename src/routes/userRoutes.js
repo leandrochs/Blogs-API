@@ -7,7 +7,8 @@ const UserController = require('../controllers/userController');
 const userRouter = express.Router();
 
 userRouter
+  .post('/', validateUser, UserController.create)
   .get('/', authMiddleware, UserController.getAll)
-  .post('/', validateUser, UserController.create);
+  .get('/:id', authMiddleware, UserController.getById);
 
 module.exports = userRouter;
