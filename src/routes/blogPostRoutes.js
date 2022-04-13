@@ -10,6 +10,7 @@ const blogPostRouter = express.Router();
 blogPostRouter
   .post('/', authMiddleware, validateBlogPost, BlogPostController.create)
   .get('/', authMiddleware, BlogPostController.getAll)
+  .get('/search', authMiddleware, BlogPostController.search)
   .get('/:id', authMiddleware, BlogPostController.getById)
   .put('/:id', authMiddleware, validateUpdateBlogPost, BlogPostController.update)
   .delete('/:id', authMiddleware, BlogPostController.deleteById);

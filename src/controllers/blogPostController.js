@@ -1,5 +1,7 @@
 const BlogPostService = require('../service/blogPostService');
 
+const defaultServerErrorMessage = { message: 'Internal server error' };
+
 const create = async (req, res) => {
   try {
     const { title, content, categoryIds } = req.body;
@@ -14,7 +16,7 @@ const create = async (req, res) => {
     return res.status(201).json(blogPost);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json(defaultServerErrorMessage);
   }
 };
 
@@ -24,7 +26,7 @@ const getAll = async (req, res) => {
     return res.status(200).json(posts);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json(defaultServerErrorMessage);
   }
 };
 
@@ -41,7 +43,7 @@ const getById = async (req, res) => {
     return res.status(200).json(blogPost);
   } catch (error) {
     console.error(error);
-    return res.status(404).json({ message: 'Internal server error' });
+    return res.status(404).json(defaultServerErrorMessage);
   }
 };
 
@@ -64,7 +66,7 @@ const update = async (req, res) => {
     return res.status(200).json(editedBlogPost);
   } catch (error) {
     console.error(error);
-    return res.status(404).json({ message: 'Internal server error' });
+    return res.status(404).json(defaultServerErrorMessage);
   }
 };
 
@@ -86,7 +88,26 @@ const deleteById = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    return res.status(404).json({ message: 'Internal server error' });
+    return res.status(404).json(defaultServerErrorMessage);
+  }
+};
+
+const search = async (req, res) => {
+  try {
+    if (!req.query.q || req.query.q === '') {
+      const posts = await BlogPostService.getAll();
+      return res.status(200).json(posts);
+    }
+
+    const postByTitle = await BlogPostService.getPostByTitle(req.query.q);
+    
+    if (postByTitle.length !== 0) return res.status(200).json(postByTitle);
+
+    const postByContent = await BlogPostService.getPostByContent(req.query.q);
+    return res.status(200).json(postByContent);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json(defaultServerErrorMessage);
   }
 };
 
@@ -96,4 +117,5 @@ module.exports = {
   getById,
   update,
   deleteById,
+  search,
 };

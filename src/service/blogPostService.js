@@ -3,6 +3,7 @@ const { BlogPost, PostsCategories, User, Categories } = require('../models');
 const config = require('../config/config');
 
 const sequelize = new Sequelize(config.development);
+const { Op } = Sequelize;
 
 const create = async ({ title, content, categoryIds, userId }) => {
   try {
@@ -103,10 +104,54 @@ const deleteById = async (id) => {
   }
 };
 
+const getPostByTitle = async (title) => {
+  try {
+    const blogPost = await BlogPost.findAll({ where: { title },
+        include: [{
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: Categories,
+          as: 'categories',
+          through: { attributes: [] },
+        }],
+      });
+    return blogPost;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
+
+const getPostByContent = async (contentSearch) => {
+  try {
+    const blogPost = await BlogPost.findAll({ where: { content: {
+      [Op.like]: `%${contentSearch}%` } },
+        include: [{
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        }, {
+          model: Categories,
+          as: 'categories',
+          through: { attributes: [] },
+        }],
+      });
+    return blogPost;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
   deleteById,
+  getPostByTitle,
+  getPostByContent,
 };
