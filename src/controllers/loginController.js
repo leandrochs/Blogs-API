@@ -10,8 +10,8 @@ const login = async (req, res) => {
   if (!user || password !== user.password) {
     return res.status(400).json({ message: 'Invalid fields' });
   }
-
-  const token = jwt.sign({ id: user.id }, jwtConfig.secret, jwtConfig.configs);
+  
+  const token = jwt.sign({ id: user.dataValues.id }, jwtConfig.secret, jwtConfig.configs);
 
   return res.status(200).json({ token });
 };
