@@ -18,20 +18,20 @@ const create = async (req, res) => {
   }
 };
 
-// const getAll = async (req, res) => {
-//   try {
-//     const posts = await BlogPostService.getAll();
+const getAll = async (req, res) => {
+  try {
+    const posts = await BlogPostService.getAll();
 
-//     if (posts.error) {
-//       return res.status(posts.error).json({ message: posts.message });
-//     }
+    // if (posts.error) {
+    //   return res.status(posts.error).json({ message: posts.message });
+    // }
 
-//     return res.status(200).json(posts);
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({ message: 'Internal server error' });
-//   }
-// };
+    return res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 // const getById = async (req, res) => {
 //   try {
@@ -52,6 +52,6 @@ const create = async (req, res) => {
 
 module.exports = {
   create,
-  // getAll,
+  getAll,
   // getById,
 };
