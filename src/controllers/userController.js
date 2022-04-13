@@ -47,8 +47,26 @@ const getById = async (req, res) => {
   }
 };
 
+const deleteMe = async (req, res) => {
+  try {
+    const loggedInUserId = req.user.id;
+
+    // if (hasPost && hasPost.userId !== loggedInUser) {
+    //   return res.status(401).json({ message: 'Unauthorized user' });
+    // }
+
+    await userService.deleteMe(loggedInUserId);
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    return res.status(404).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  deleteMe,
 };

@@ -92,7 +92,7 @@ const update = async ({ title, content, id }) => {
 
 const deleteById = async (id) => {
   try {
-    const deleteBlogPost = await User.destroy(
+    const deleteBlogPost = await BlogPost.destroy(
       { where: { id } },
     );
 
