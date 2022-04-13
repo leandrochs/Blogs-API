@@ -69,8 +69,30 @@ const getById = async (id) => {
   }
 };
 
+const update = async ({ title, content, id }) => {
+  try {
+    await BlogPost.update( { title, content }, { where: { id } });
+
+    const blogPost = await BlogPost.findByPk(id, {
+      attributes: ['title', 'content', 'userId'],
+      include: 
+      {
+        model: Categories,
+        as: 'categories',
+        through: { attributes: [] },
+      },
+    });
+
+    return blogPost;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
