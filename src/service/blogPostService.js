@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { BlogPost, PostsCategories } = require('../models');
+const { BlogPost, PostsCategories, User, Categories } = require('../models');
 const config = require('../config/config');
 
 const sequelize = new Sequelize(config.development);
@@ -27,15 +27,26 @@ const create = async ({ title, content, categoryIds, userId }) => {
   }
 };
 
-// const getAll = async () => {
-//   try {
-//     const user = await BlogPost.findAll();
-//     return user;
-//   } catch (error) {
-//     console.log(error.message);
-//     return error;
-//   }
-// };
+const getAll = async () => {
+  try {
+    const blogPost = await BlogPost.findAll({
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: { exclude: ['password'] },
+      },
+      {
+        model: Categories,
+        as: 'categories',
+        through: { attributes: [] },
+      }],
+    });
+    return blogPost;
+  } catch (error) {
+    console.log(error.message);
+    return error;
+  }
+};
 
 // const getById = async (id) => {
 //   try {
@@ -52,6 +63,6 @@ const create = async ({ title, content, categoryIds, userId }) => {
 
 module.exports = {
   create,
-  // getAll,
+  getAll,
   // getById,
 };
