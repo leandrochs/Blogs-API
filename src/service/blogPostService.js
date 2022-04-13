@@ -48,21 +48,29 @@ const getAll = async () => {
   }
 };
 
-// const getById = async (id) => {
-//   try {
-//     const user = await BlogPost.findOne({
-//       attributes: ['id', 'displayName', 'email', 'image'],
-//       where: { id },
-//     });
-//     return user;
-//   } catch (error) {
-//     console.error(error.message);
-//     return error;
-//   }
-// };
+const getById = async (id) => {
+  try {
+    const user = await BlogPost.findByPk(id, {
+        include: [{
+          model: User,
+          as: 'user',
+          attributes: { exclude: ['password'] },
+        },
+        {
+          model: Categories,
+          as: 'categories',
+          through: { attributes: [] },
+        }],
+      });
+    return user;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
 
 module.exports = {
   create,
   getAll,
-  // getById,
+  getById,
 };
