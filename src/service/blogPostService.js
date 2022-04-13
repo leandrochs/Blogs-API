@@ -71,7 +71,7 @@ const getById = async (id) => {
 
 const update = async ({ title, content, id }) => {
   try {
-    await BlogPost.update( { title, content }, { where: { id } });
+    await BlogPost.update({ title, content }, { where: { id } });
 
     const blogPost = await BlogPost.findByPk(id, {
       attributes: ['title', 'content', 'userId'],
@@ -90,9 +90,23 @@ const update = async ({ title, content, id }) => {
   }
 };
 
+const deleteById = async (id) => {
+  try {
+    const deleteBlogPost = await User.destroy(
+      { where: { id } },
+    );
+
+    return deleteBlogPost;
+  } catch (error) {
+    console.error(error.message);
+    return error;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deleteById,
 };

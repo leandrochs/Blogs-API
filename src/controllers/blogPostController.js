@@ -68,9 +68,32 @@ const update = async (req, res) => {
   }
 };
 
+const deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const loggedInUser = req.user.id;
+
+    const hasPost = await BlogPostService.getById(id);
+
+    if (!hasPost) return res.status(404).json({ message: 'Post does not exist' });
+    
+    if (hasPost && hasPost.userId !== loggedInUser) {
+      return res.status(401).json({ message: 'Unauthorized user' });
+    }
+
+    await BlogPostService.deleteById(id);
+
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    return res.status(404).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deleteById,
 };
