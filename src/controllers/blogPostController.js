@@ -21,11 +21,6 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
   try {
     const posts = await BlogPostService.getAll();
-
-    // if (posts.error) {
-    //   return res.status(posts.error).json({ message: posts.message });
-    // }
-
     return res.status(200).json(posts);
   } catch (error) {
     console.error(error);
@@ -33,25 +28,25 @@ const getAll = async (req, res) => {
   }
 };
 
-// const getById = async (req, res) => {
-//   try {
-//     const { id } = req.params;
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
 
-//     const blogPost = await BlogPostService.getById(id);
+    const blogPost = await BlogPostService.getById(id);
 
-//     if (!blogPost) {
-//       return res.status(404).json({ message: 'User does not exist' });
-//     }
+    if (!blogPost) {
+      return res.status(404).json({ message: 'Post does not exist' });
+    }
 
-//     return res.status(200).json(blogPost);
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(404).json({ message: 'Internal server error' });
-//   }
-// };
+    return res.status(200).json(blogPost);
+  } catch (error) {
+    console.error(error);
+    return res.status(404).json({ message: 'Internal server error' });
+  }
+};
 
 module.exports = {
   create,
   getAll,
-  // getById,
+  getById,
 };
