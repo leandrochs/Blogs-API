@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const createUserSchema = Joi.object({
+const loginSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().length(6).required(),
 }).messages({
@@ -11,7 +11,7 @@ const createUserSchema = Joi.object({
 });
 
 const validateLogin = async (req, res, next) => {
-  const { error } = createUserSchema.validate(req.body);
+  const { error } = loginSchema.validate(req.body);
 
   if (error) {
     console.error(error);
