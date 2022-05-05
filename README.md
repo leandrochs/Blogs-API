@@ -10,8 +10,6 @@ Primeiro, foi criada uma tabela para os usuários que desejam se cadastrar na ap
 
 ---
 
-
-
 ### Instruções para rodar o projeto:
 
 1. Instale as dependências
@@ -22,7 +20,6 @@ Primeiro, foi criada uma tabela para os usuários que desejam se cadastrar na ap
 
 2. Configure o arquivo .env
 * Variáveis:
-</br>
 
     `host: process.env.HOSTNAME`
 
@@ -53,6 +50,7 @@ _Observação: há um arquivo `.env.example` para referência._
 </br>
 
   ou
+
 </br>
 
 * `npm run debug` (inicia com nodemon)
